@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="exampleApp">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -17,9 +17,9 @@
 
   <body class="bg-gray-300">
     <div class="flex flex-col justify-center items-center min-h-screen text-gray-700">
-      <h1 class="text-7xl">Angular 1.6.9</h1>
-      <span class="mt-5 text-lg">Template</span>
+      <div ng-view></div>
     </div>
+    {@template-scripts-vendor}
     {@template-scripts-app}
   </body>
 </html>

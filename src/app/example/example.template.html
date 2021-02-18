@@ -1,0 +1,13 @@
+<div class="flex flex-col justify-center items-center min-h-screen text-gray-700">
+  <h1 class="text-6xl">{{ $ctrl.title }}</h1>
+  <span class="text-xl mt-4">{{ $ctrl.subtitle }}</span>
+  <div 
+    ng-click="$ctrl.changeSubtitle()"
+    class="
+      p-3 mt-10
+      bg-blue-700 rounded-md hover:bg-blue-600 hover:shadow-lg
+      text-white font-semibold
+      cursor-pointer
+      transition-all"
+  >Click me</div>
+</div>
