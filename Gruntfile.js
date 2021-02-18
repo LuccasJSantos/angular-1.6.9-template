@@ -115,6 +115,9 @@ module.exports = function (grunt) {
             pattern: '{@template-scripts-app}',
             replacement: '<script type="text/javascript" src="assets/js/scripts.js"></script>'
           }, {
+            pattern: '{@template-scripts-vendor}',
+            replacement: '<script type="text/javascript" src="assets/js/vendor.min.js"></script>'
+          }, {
             pattern: '{@template-styles-livereload}',
             replacement: '<script src="//localhost:35729/livereload.js"></script>'
           }]
@@ -137,6 +140,9 @@ module.exports = function (grunt) {
           }, {
             pattern: '{@template-scripts-app}',
             replacement: `<script type="text/javascript" src="assets/js/scripts${_version}.js"></script>`
+          }, {
+            pattern: '{@template-scripts-vendor}',
+            replacement: '<script type="text/javascript" src="assets/js/vendor.min.js"></script>'
           }, {
             pattern: '{@template-styles-livereload}',
             replacement: ''
