@@ -202,7 +202,7 @@ module.exports = function (grunt) {
     'concat:appCss',
     'postcss:build',
     'concat:appJs',
-    'string-replace',
+    'string-replace:build',
     'copy:build',
     'clean:temp'
   ]);
@@ -211,7 +211,7 @@ module.exports = function (grunt) {
     'concat:vendorJs',
     'concat:appCss',
     'concat:appJs',
-    'string-replace',
+    'string-replace:build',
     'copy:build',
     'clean:temp'
   ]);
@@ -225,7 +225,7 @@ module.exports = function (grunt) {
     'postcss:dist',
     'concat:appJs',
     'uglify',
-    'string-replace',
+    'string-replace:dist',
     'copy:dist',
     'clean:temp'
   ]);
