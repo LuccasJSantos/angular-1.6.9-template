@@ -174,7 +174,7 @@ module.exports = function (grunt) {
       },
       scripts: {
         files: ['src/**/*', '!src/**/*.spec.js'],
-        tasks: ['build'],
+        tasks: ['watch-build'],
         options: {
           interrupt: true,
           spawn: false
@@ -196,26 +196,33 @@ module.exports = function (grunt) {
   grunt.registerTask('watch-tailwindcss', ['watch:postcss'])
 
   grunt.registerTask('build', [
-    'clean',
+    'clean:build',
     'concat:vendorCss',
     'concat:vendorJs',
     'concat:appCss',
-    'postcss',
-    // 'jshint:build',
+    'postcss:build',
+    'concat:appJs',
+    'string-replace',
+    'copy:build',
+    'clean:temp'
+  ]);
+  grunt.registerTask('watch-build', [
+    'concat:vendorCss',
+    'concat:vendorJs',
+    'concat:appCss',
     'concat:appJs',
     'string-replace',
     'copy:build',
     'clean:temp'
   ]);
   grunt.registerTask('dist', [
-    'clean',
+    'clean:dist',
     'concat:vendorCss',
     'cssmin:vendorCss',
     'concat:vendorJs',
     'concat:appCss',
     'cssmin:appCss',
-    'postcss',
-    // 'jshint:dist',
+    'postcss:dist',
     'concat:appJs',
     'uglify',
     'string-replace',
