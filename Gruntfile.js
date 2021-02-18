@@ -32,7 +32,7 @@ module.exports = function (grunt) {
       vendorCss: { src: _bundle.vendor.css, dest: `${_tempDir}assets/css/vendor.css`, nonull: true },
       vendorJs: { src: _bundle.vendor.js, dest: `${_tempDir}assets/js/vendor.min.js`, nonull: true },
       appCss: { src: 'src/**/*.css', dest: `${_tempDir}assets/css/styles.css`, nonull: true },
-      appJs: { src: 'src/**/*.js', dest: `${_tempDir}assets/js/scripts.js`, nonull: true }
+      appJs: { src: _bundle.app.js, dest: `${_tempDir}assets/js/scripts.js`, nonull: true }
     },
 
     copy: {
