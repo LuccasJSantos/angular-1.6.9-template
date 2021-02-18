@@ -130,16 +130,16 @@ module.exports = function (grunt) {
         options: {
           replacements: [{
             pattern: '{@template-styles-app}',
-            replacement: '<link type="text/css" rel="stylesheet" href="assets/css/styles.css" />'
+            replacement: `<link type="text/css" rel="stylesheet" href="assets/css/styles${_version}.min.css" />`
           }, {
             pattern: '{@template-styles-vendor}',
-            replacement: '<link type="text/css" rel="stylesheet" href="assets/css/vendor.css" />'
+            replacement: '<link type="text/css" rel="stylesheet" href="assets/css/vendor.min.css" />'
           }, {
             pattern: '{@template-styles-tailwind}',
             replacement: '<link type="text/css" rel="stylesheet" href="assets/css/tailwind.css"></script>'
           }, {
             pattern: '{@template-scripts-app}',
-            replacement: `<script type="text/javascript" src="assets/js/scripts${_version}.js"></script>`
+            replacement: `<script type="text/javascript" src="assets/js/scripts${_version}.min.js"></script>`
           }, {
             pattern: '{@template-scripts-vendor}',
             replacement: '<script type="text/javascript" src="assets/js/vendor.min.js"></script>'
