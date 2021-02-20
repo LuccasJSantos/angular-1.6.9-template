@@ -31,7 +31,6 @@ module.exports = function (grunt) {
       },
       vendorCss: { src: _bundle.vendor.css, dest: `${_tempDir}assets/css/vendor.css`, nonull: true },
       vendorJs: { src: _bundle.vendor.js, dest: `${_tempDir}assets/js/vendor.min.js`, nonull: true },
-      appCss: { src: 'src/**/*.css', dest: `${_tempDir}assets/css/styles.css`, nonull: true },
       appJs: { src: _bundle.app.js, dest: `${_tempDir}assets/js/scripts.js`, nonull: true }
     },
 
@@ -66,11 +65,6 @@ module.exports = function (grunt) {
           { expand: true, cwd: _tempDir, src: ['assets/css/vendor.css'], dest: _tempDir, ext: '.min.css' }
         ]
       },
-      appCss: {
-        files: [
-          { expand: true, cwd: _tempDir, src: [`assets/css/styles.css`], dest: _tempDir, ext: `${_version}.min.css` }
-        ]
-      }
     },
 
     jshint: {
@@ -178,14 +172,14 @@ module.exports = function (grunt) {
       options: {
         livereload: true,
       },
-      scripts: {
-        files: ['src/**/*', '!src/**/*.spec.js'],
-        tasks: ['watch-build'],
-        options: {
-          interrupt: true,
-          spawn: false
-        },
+      css: {
+        files: ['src/**/*.css'],
+        tasks: ['postcss:build']
       },
+      else: {
+        files: ['src/**/*', '!src/**/*.css'],
+        tasks: ['watch-build']
+      }
     }
   })
 
@@ -205,17 +199,15 @@ module.exports = function (grunt) {
     'clean:build',
     'concat:vendorCss',
     'concat:vendorJs',
-    'concat:appCss',
-    'postcss:build',
     'concat:appJs',
     'string-replace:build',
     'copy:build',
+    'postcss:build',
     'clean:temp'
   ]);
   grunt.registerTask('watch-build', [
     'concat:vendorCss',
     'concat:vendorJs',
-    'concat:appCss',
     'concat:appJs',
     'string-replace:build',
     'copy:build',
@@ -226,13 +218,11 @@ module.exports = function (grunt) {
     'concat:vendorCss',
     'cssmin:vendorCss',
     'concat:vendorJs',
-    'concat:appCss',
-    'cssmin:appCss',
-    'postcss:dist',
     'concat:appJs',
     'uglify',
     'string-replace:dist',
     'copy:dist',
+    'postcss:dist',
     'clean:temp'
   ]);
 
