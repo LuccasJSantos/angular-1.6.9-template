@@ -74,17 +74,25 @@ module.exports = function (grunt) {
           { expand: true, cwd: _tempDir, src: ['assets/css/vendor.css'], dest: _tempDir, ext: '.min.css' }
         ]
       },
+      appCss: {
+        files: [
+          {
+            expand: true,
+            cwd: _tempDir,
+            src: 'assets/css/styles.css',
+            dest: _buildDir,
+            ext: `${_version}.min.css`
+          }
+        ]
+      },
       tailwind: {
         files: [
           {
             expand: true,
             cwd: _tempDir,
-            src: [
-              'assets/css/styles.css',
-              'assets/css/tailwind.css'
-            ],
+            src: 'assets/css/tailwind.css',
             dest: _buildDir,
-            ext: `${_version}.min.css`
+            ext: '.min.css'
           }
         ]
       },
@@ -153,7 +161,7 @@ module.exports = function (grunt) {
             replacement: '<link type="text/css" rel="stylesheet" href="assets/css/vendor.min.css" />'
           }, {
             pattern: '{@template-styles-tailwind}',
-            replacement: `<link type="text/css" rel="stylesheet" href="assets/css/tailwind${_version}.min.css"></script>`
+            replacement: '<link type="text/css" rel="stylesheet" href="assets/css/tailwind.min.css"></script>'
           }, {
             pattern: '{@template-scripts-app}',
             replacement: `<script type="text/javascript" src="assets/js/scripts${_version}.min.js"></script>`
@@ -272,6 +280,7 @@ module.exports = function (grunt) {
     'copy:dist',
     'postcss:dist',
     'cssmin:tailwind',
+    'cssmin:appCss',
     'clean:temp'
   ]);
 
