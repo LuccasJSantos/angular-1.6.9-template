@@ -1,6 +1,5 @@
 module.exports = function (grunt) {
   const _buildDir = 'build/'
-  const _distDir = 'dist/'
   const _srcDir = 'src/'
   const _tempDir = 'temp/'
   const _bundle = grunt.file.readJSON('src/app.bundle.json')
@@ -15,7 +14,7 @@ module.exports = function (grunt) {
         src: [_buildDir]
       },
       dist: {
-        src: [_distDir]
+        src: [_buildDir]
       },
       temp: {
         src: [_tempDir]
@@ -43,6 +42,16 @@ module.exports = function (grunt) {
         },
         encoding: null
       },
+      js: {
+        files: [
+          { expand: true, cwd: _tempDir, src: ['assets/**/*.js'], dest: _buildDir },
+        ]
+      },
+      html: {
+        files: [
+          { expand: true, cwd: _srcDir, src: ['app/**/*.html'], dest: _buildDir, filter: 'isFile' },
+        ]
+      },
       build: {
         files: [
           { expand: true, src: [`./index.html`], dest: _buildDir },
@@ -52,9 +61,9 @@ module.exports = function (grunt) {
       },
       dist: {
         files: [
-          { expand: true, src: [`./index.html`], dest: _distDir },
-          { expand: true, cwd: _srcDir, src: ['assets/img/**', 'app/**/*.html'], dest: _distDir, filter: 'isFile' },
-          { expand: true, cwd: _tempDir, src: ['assets/**/*.min.css', 'assets/**/*.min.js'], dest: _distDir }
+          { expand: true, src: [`./index.html`], dest: _buildDir },
+          { expand: true, cwd: _srcDir, src: ['assets/img/**', 'app/**/*.html'], dest: _buildDir, filter: 'isFile' },
+          { expand: true, cwd: _tempDir, src: ['assets/**/*.min.css', 'assets/**/*.min.js'], dest: _buildDir }
         ]
       }
     },
@@ -63,6 +72,20 @@ module.exports = function (grunt) {
       vendorCss: {
         files: [
           { expand: true, cwd: _tempDir, src: ['assets/css/vendor.css'], dest: _tempDir, ext: '.min.css' }
+        ]
+      },
+      tailwind: {
+        files: [
+          {
+            expand: true,
+            cwd: _tempDir,
+            src: [
+              'assets/css/styles.css',
+              'assets/css/tailwind.css'
+            ],
+            dest: _buildDir,
+            ext: `${_version}.min.css`
+          }
         ]
       },
     },
@@ -119,7 +142,7 @@ module.exports = function (grunt) {
       },
       dist: {
         files: [
-          { expand: true, flatten: true, src: [`${_srcDir}index.html`], dest: _distDir }
+          { expand: true, flatten: true, src: [`${_srcDir}index.html`], dest: _buildDir }
         ],
         options: {
           replacements: [{
@@ -130,7 +153,7 @@ module.exports = function (grunt) {
             replacement: '<link type="text/css" rel="stylesheet" href="assets/css/vendor.min.css" />'
           }, {
             pattern: '{@template-styles-tailwind}',
-            replacement: '<link type="text/css" rel="stylesheet" href="assets/css/tailwind.css"></script>'
+            replacement: `<link type="text/css" rel="stylesheet" href="assets/css/tailwind${_version}.min.css"></script>`
           }, {
             pattern: '{@template-scripts-app}',
             replacement: `<script type="text/javascript" src="assets/js/scripts${_version}.min.js"></script>`
@@ -163,8 +186,15 @@ module.exports = function (grunt) {
         expand: true,
         cwd: 'src/styles',
         src: ['**/*.css'],
-        dest: `${_distDir}assets/css`,
+        dest: `${_tempDir}assets/css`,
         ext: '.css'
+      }
+    },
+
+    sync: {
+      html: {
+        files: [{ cwd: 'src', src: ['app/**'], dest: _buildDir }],
+        verbose: true
       }
     },
 
@@ -172,17 +202,22 @@ module.exports = function (grunt) {
       options: {
         livereload: true,
       },
+      js: {
+        files: ['src/**/*.js'],
+        tasks: ['javascript']
+      },
+      html: {
+        files: ['src/**/*.html'],
+        tasks: ['html']
+      },
       css: {
         files: ['src/**/*.css'],
         tasks: ['postcss:build']
-      },
-      else: {
-        files: ['src/**/*', '!src/**/*.css'],
-        tasks: ['watch-build']
       }
     }
   })
 
+  grunt.loadNpmTasks('grunt-sync');
   grunt.loadNpmTasks('grunt-contrib-copy')
   grunt.loadNpmTasks('grunt-contrib-clean')
   grunt.loadNpmTasks('grunt-contrib-watch')
@@ -194,6 +229,19 @@ module.exports = function (grunt) {
 
   grunt.registerTask('compile-tailwindcss', ['postcss'])
   grunt.registerTask('watch-tailwindcss', ['watch:postcss'])
+
+  grunt.registerTask('javascript', [
+    'concat:vendorJs',
+    'concat:appJs',
+    'copy:js',
+    'clean:temp'
+  ])
+
+  grunt.registerTask('html', [
+    'string-replace:build',
+    'sync:html',
+    'clean:temp'
+  ])
 
   grunt.registerTask('build', [
     'clean:build',
@@ -223,6 +271,7 @@ module.exports = function (grunt) {
     'string-replace:dist',
     'copy:dist',
     'postcss:dist',
+    'cssmin:tailwind',
     'clean:temp'
   ]);
 
