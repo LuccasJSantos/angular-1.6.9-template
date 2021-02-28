@@ -1,3 +1,7 @@
-.button {
-  @apply bg-red-500 p-5;
+.blue-button {
+  @apply p-3 mt-10 bg-blue-700 rounded-md text-white font-semibold cursor-pointer transition-all;
+}
+
+.blue-button:hover {
+  @apply bg-blue-600 shadow-lg;
 }
